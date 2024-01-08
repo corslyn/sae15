@@ -14,7 +14,7 @@ public:
         int sensorValue = analogRead(pin);
       
         // Calibrate these threshold values based on your sensor and lighting conditions
-        if (sensorValue > 300 && sensorValue < 800) {
+        if (sensorValue > 400) {
             return 1;
         } else {
             return 0;

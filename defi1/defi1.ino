@@ -1,3 +1,4 @@
+
 #include "lightsensor.h"
 #include <FastLED.h>
 #include "linedriver.h"
@@ -15,59 +16,49 @@ LightSensor sensorR(A0);
 LineDriver driver;
 
 CarMotors engine;
-
+int cpt = 0;
+double speed = 235;
 void setup() {
-    Serial.begin(9600);
-    engine.init(100);
-    Serial.println("Start...");
+  Serial.begin(9600);
+  engine.init(speed);
+  Serial.println("Start...");
 }
 
 void loop() {
 
-    int state = driver.SetLineDriver(sensorL.detectLine(), sensorM.detectLine(), sensorR.detectLine());
-    Serial.println(state);
-    switch(state) {
-      case 0:
-        engine.stop();
-        break;
-      case 1:
-        engine.setSpeed(60);
-        engine.turnLeft();
-                delay(100);
-        engine.goForward();
-
-        break;
-      case 2:
-        engine.setSpeed(100);
-        engine.goForward();
-        break;
-      case 3:
-        engine.setSpeed(60);
-        
-        engine.turnLeft();
-                delay(100);
-        engine.goForward();
-
-        break;
-      case 4:
-        engine.setSpeed(60);
-        engine.turnRight();
-                delay(100);
-        engine.goForward();
-
-        break;
-      case 6:
-        engine.setSpeed(60);
-        engine.turnRight();
-        delay(100);
-                engine.goForward();
-
-        break;
-      case 7:
-        engine.stop();
-        break;
-
-        
-    }
-    delay(100);
+  int state = driver.SetLineDriver(sensorL.detectLine(), sensorM.detectLine(), sensorR.detectLine());
+  Serial.println(state);
+  if (cpt<6) {
+  switch (state) {
+    case 0:
+      engine.stop();
+      break;
+    case 1:
+      engine.setSpeed(speed / 2);
+      engine.turnLeft();
+      break;
+    case 2:
+      engine.setSpeed(speed);
+      engine.goForward();
+      break;
+    case 3:
+      engine.setSpeed(speed / 2);
+      engine.turnLeft();
+      break;
+    case 4:
+      engine.setSpeed(speed / 2);
+      engine.turnRight();
+      break;
+    case 6:
+      engine.setSpeed(speed / 2);
+      engine.turnRight();
+      break;
+    case 7:
+      cpt += 1;
+      engine.goForward();
+      break;
+  }
+  } else {
+  engine.stop();
+  }
 }
