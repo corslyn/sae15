@@ -1,4 +1,3 @@
-
 #include "lightsensor.h"
 #include <FastLED.h>
 #include "linedriver.h"
@@ -7,7 +6,7 @@
 const int RGBpin = 4;
 const int numLEDs = 1;
 CRGB leds[numLEDs];
-uint32_t tabColors[] = {0xFF0000, 0xFB4C0D, 0x00FF00};
+uint32_t tabColors[] = {0xFF0000, 0x008000, 0x0000FF, 0xFFA500};
 
 LightSensor sensorL(A2);
 LightSensor sensorM(A1);
@@ -17,18 +16,22 @@ LineDriver driver;
 
 CarMotors engine;
 int cpt = 0;
+int threshold = 0;
 double speed = 235;
+
 void setup() {
   Serial.begin(9600);
   engine.init(speed);
   Serial.println("Start...");
+  FastLED.addLeds<NEOPIXEL, RGBpin>(leds, numLEDs);  // led
+  FastLED.setBrightness(20);                           // led
+  delay(3000);
 }
 
 void loop() {
-
   int state = driver.SetLineDriver(sensorL.detectLine(), sensorM.detectLine(), sensorR.detectLine());
   Serial.println(state);
-  if (cpt<6) {
+
   switch (state) {
     case 0:
       engine.stop();
@@ -54,11 +57,33 @@ void loop() {
       engine.turnRight();
       break;
     case 7:
-      cpt += 1;
       engine.goForward();
+      threshold++;
+      if (threshold > 5) {
+        cpt++;
+      }
       break;
   }
-  } else {
-  engine.stop();
+
+  if (threshold != 0 && threshold < 5) {
+    threshold = 0;
   }
-}
+
+
+
+  switch (cpt) {
+    case 0:
+      FastLED.showColor(tabColors[0]);
+      break;
+    case 2:
+      FastLED.showColor(tabColors[1]);
+      break;
+    case 4:
+      FastLED.showColor(tabColors[2]);
+      break;
+    case 6:
+      FastLED.showColor(tabColors[3]);
+      engine.stop();  // Stop the engine when cpt reaches 6
+      break;
+  }
+} //bing chilling
