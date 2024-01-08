@@ -1,4 +1,4 @@
-#include "CarMotors.h"
+#include "carMotors.h"
 
 void CarMotors::init(uint8_t p_speed) {
   currentSpeed = p_speed;
@@ -65,4 +65,3 @@ void CarMotors::stop() {
   analogWrite(PIN_Motor_PWMA, 0);
   analogWrite(PIN_Motor_PWMB, 0);
 }
-

@@ -10,9 +10,9 @@ class LightSensor {
 	detectLine();
   }
 
-  bool detectLine() {
-	int state = digitalRead(pin);
-	if (state!=0) {
+  int detectLine() {
+	float state = digitalRead(pin);
+	if (state>0) {
   	return 1;
 	} else {
   	return 0;
