@@ -25,6 +25,8 @@ void setup() {
   Serial.println("Start...");
   FastLED.addLeds<NEOPIXEL, RGBpin>(leds, numLEDs);
   FastLED.setBrightness(20);
+  FastLED.showColor(tabColors[0]);
+
   delay(3000);
 }
 
@@ -34,16 +36,16 @@ void loop() {
   deplacer(state);
   switch (cpt) {
     case 0:
-      FastLED.showColor(tabColors[0]);
-      break;
-    case 2:
       FastLED.showColor(tabColors[1]);
       break;
-    case 4:
+    case 2:
       FastLED.showColor(tabColors[2]);
       break;
-    case 6:
+    case 4:
       FastLED.showColor(tabColors[3]);
+      break;
+    case 6:
+      FastLED.showColor(tabColors[0]);
       break;
   }
 }
@@ -51,14 +53,14 @@ void loop() {
 void deplacer(int state) {
   if (cpt < 6) {
     switch (state) {
-
       case 0:
         engine.stop();
         threshold = 0;
         break;
       case 1:
-        engine.setSpeed(speed / 2);
-        engine.turnLeft();
+        engine.setSpeed(speed);
+        engine.drive(0.01, 1.0);
+        delay(1);
         threshold = 0;
         break;
       case 2:
@@ -67,31 +69,34 @@ void deplacer(int state) {
         threshold = 0;
         break;
       case 3:
-        engine.setSpeed(speed / 2);
-        engine.turnLeft();
+        engine.setSpeed(speed);
+        engine.drive(0.01, 1.0);
+        delay(1);
         threshold = 0;
         break;
       case 4:
-        engine.setSpeed(speed / 2);
-        engine.turnRight();
+        engine.setSpeed(speed);
+        engine.drive(1.0, 0.01);
+        delay(1);
         threshold = 0;
         break;
       case 6:
-        engine.setSpeed(speed / 2);
-        engine.turnRight();
+        engine.setSpeed(speed);
+        engine.drive(1.0, 0.01);
+        delay(1);
         threshold = 0;
         break;
-      case 7:
 
+      case 7:
         threshold++;
-        if (threshold > 5) {
+        if (threshold > 10) {
           engine.goForward();
           cpt++;
+          delay(500);
         } else {
           engine.stop();
         }
         break;
-
     }
   } else {
     engine.stop();
