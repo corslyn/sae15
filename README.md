@@ -1,5 +1,7 @@
 # SAé 15 - Traiter des données - Défi 1 - Groupe 17
 
+Suivi : https://docs.google.com/document/d/1it6LBhr-Q4gG36iODh7H2lBcTRrTfJbJHwyuoBGaKZc/edit?usp=sharing
+
 ## Solution utilisée
 
 Afin de résoudre ce défi, nous avons utilisé la classe lightSensor qui permet de détecter si une ligne se trouve sous un capteur, la classe lineDriver qui permet de déterminer quelle est la situation du robot (ex: virage serré à droite, à gauche...) et la classe FastLED pour contrôler la LED.
