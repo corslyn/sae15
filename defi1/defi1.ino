@@ -17,60 +17,21 @@ LineDriver driver;
 CarMotors engine;
 int cpt = 0;
 int threshold = 0;
-double speed = 235;
+double speed = 180;
 
 void setup() {
   Serial.begin(9600);
   engine.init(speed);
   Serial.println("Start...");
-  FastLED.addLeds<NEOPIXEL, RGBpin>(leds, numLEDs);  // led
-  FastLED.setBrightness(20);                           // led
+  FastLED.addLeds<NEOPIXEL, RGBpin>(leds, numLEDs);
+  FastLED.setBrightness(20);
   delay(3000);
 }
 
 void loop() {
   int state = driver.SetLineDriver(sensorL.detectLine(), sensorM.detectLine(), sensorR.detectLine());
   Serial.println(state);
-
-  switch (state) {
-    case 0:
-      engine.stop();
-      break;
-    case 1:
-      engine.setSpeed(speed / 2);
-      engine.turnLeft();
-      break;
-    case 2:
-      engine.setSpeed(speed);
-      engine.goForward();
-      break;
-    case 3:
-      engine.setSpeed(speed / 2);
-      engine.turnLeft();
-      break;
-    case 4:
-      engine.setSpeed(speed / 2);
-      engine.turnRight();
-      break;
-    case 6:
-      engine.setSpeed(speed / 2);
-      engine.turnRight();
-      break;
-    case 7:
-      engine.goForward();
-      threshold++;
-      if (threshold > 5) {
-        cpt++;
-      }
-      break;
-  }
-
-  if (threshold != 0 && threshold < 5) {
-    threshold = 0;
-  }
-
-
-
+  deplacer(state);
   switch (cpt) {
     case 0:
       FastLED.showColor(tabColors[0]);
@@ -83,7 +44,56 @@ void loop() {
       break;
     case 6:
       FastLED.showColor(tabColors[3]);
-      engine.stop();  // Stop the engine when cpt reaches 6
       break;
   }
-} //bing chilling
+}
+
+void deplacer(int state) {
+  if (cpt < 6) {
+    switch (state) {
+
+      case 0:
+        engine.stop();
+        threshold = 0;
+        break;
+      case 1:
+        engine.setSpeed(speed / 2);
+        engine.turnLeft();
+        threshold = 0;
+        break;
+      case 2:
+        engine.setSpeed(speed);
+        engine.goForward();
+        threshold = 0;
+        break;
+      case 3:
+        engine.setSpeed(speed / 2);
+        engine.turnLeft();
+        threshold = 0;
+        break;
+      case 4:
+        engine.setSpeed(speed / 2);
+        engine.turnRight();
+        threshold = 0;
+        break;
+      case 6:
+        engine.setSpeed(speed / 2);
+        engine.turnRight();
+        threshold = 0;
+        break;
+      case 7:
+
+        threshold++;
+        if (threshold > 5) {
+          engine.goForward();
+          cpt++;
+        } else {
+          engine.stop();
+        }
+        break;
+
+    }
+  } else {
+    engine.stop();
+  }
+}
