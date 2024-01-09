@@ -17,16 +17,14 @@ LineDriver driver;
 CarMotors engine;
 int cpt = 0;
 int threshold = 0;
-double speed = 200;
+int speed = 200;
 
 void setup() {
   Serial.begin(9600);
   engine.init(speed);
-  Serial.println("Start...");
   FastLED.addLeds<NEOPIXEL, RGBpin>(leds, numLEDs);
   FastLED.setBrightness(20);
   FastLED.showColor(tabColors[0]);
-
   delay(3000);
 }
 
@@ -83,11 +81,11 @@ void deplacer(int state) {
         break;
       case 7:
         threshold++;
-        if (threshold > 5) {
+        if (threshold > 6) {
           engine.drive(0.8, 0.8);
           delay(10);
           cpt++;
-          
+
         } else {
           engine.stop();
         }
