@@ -17,7 +17,7 @@ LineDriver driver;
 CarMotors engine;
 int cpt = 0;
 int threshold = 0;
-double speed = 180;
+double speed = 255;
 
 void setup() {
   Serial.begin(9600);
@@ -58,41 +58,36 @@ void deplacer(int state) {
         threshold = 0;
         break;
       case 1:
-        engine.setSpeed(speed);
-        engine.drive(0.01, 1.0);
-        delay(1);
+
+        engine.drive(1, -0.38);
         threshold = 0;
         break;
       case 2:
-        engine.setSpeed(speed);
-        engine.goForward();
+
+        engine.drive(0.8, 0.8);
         threshold = 0;
         break;
       case 3:
-        engine.setSpeed(speed);
-        engine.drive(0.01, 1.0);
-        delay(1);
+
+        engine.drive(0.7, 0.2);
         threshold = 0;
         break;
       case 4:
-        engine.setSpeed(speed);
-        engine.drive(1.0, 0.01);
-        delay(1);
+        engine.drive(-0.38, 1);
         threshold = 0;
         break;
       case 6:
-        engine.setSpeed(speed);
-        engine.drive(1.0, 0.01);
-        delay(1);
+
+        engine.drive(0.2, 0.7);
         threshold = 0;
         break;
-
       case 7:
         threshold++;
         if (threshold > 10) {
-          engine.goForward();
+          engine.drive(0.5, 0.5);
+          delay(10);
           cpt++;
-          delay(500);
+          
         } else {
           engine.stop();
         }
