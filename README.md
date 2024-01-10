@@ -18,6 +18,10 @@ Au croisement 6 (fin tour 3), le robot s'arrete et la LED devient rouge.
 
 # Vidéo de démonstration
 
+https://youtu.be/i7pWfOpAM6M?si=jphhwafP5VUDUz4R
+
+Le temps passé pour effectuer les 3 tours est 57,36 secondes (+3s de délai avant le départ)
+
 # Code Source
 
 https://github.com/corslyn/sae15/
